@@ -2,11 +2,12 @@ trigger:
   branches:
     include:
       - master
+      - feature/*
 
 pr: none
 
-pool:
-  vmImage: 'ubuntu-latest'
+# pool:
+#   vmImage: 'ubuntu-latest'
 
 parameters:
   - name: environment_components
@@ -92,7 +93,7 @@ stages:
         jobs:
           - job: waitForValidation
             displayName: Wait for Manual Validation
-            pool: server
+            pool: Azure Pipelines
             steps:
               - task: ManualValidation@1
                 timeoutInMinutes: 23160
@@ -294,8 +295,8 @@ stages:
           - job: Configure_RefData_Upload_${{ deployment.environment }}_${{ lz.landing_zone }}
             displayName: 'Upload RefData to ${{ deployment.environment }}${{ lz.landing_zone }}'
             pool: 
-              vmImage: 'ubuntu-latest'
-              # name: ${{ deployment.pool_name }}
+              #vmImage: 'ubuntu-latest'
+              name: ${{ deployment.pool_name }}
             steps:
               - task: AzureCLI@2
                 displayName: Configure RefData Storage
@@ -346,7 +347,8 @@ stages:
           - job: Configure_HTML_Upload_${{ deployment.environment }}_${{ lz.landing_zone }}
             displayName: 'Upload HTML Templates to ${{ deployment.environment }}${{ lz.landing_zone }}'
             pool: 
-              vmImage: 'ubuntu-latest'
+              #vmImage: 'ubuntu-latest'
+              name: ${{ deployment.pool_name }}
             steps:
               - task: AzureCLI@2
                 displayName: Configure Storage and Upload HTML Templates
